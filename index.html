@@ -7,37 +7,17 @@
 <style>
 body{font-family:Arial;background:#f4f4f4;padding:40px}
 .wrapper{max-width:1100px;margin:auto;background:#fff;padding:35px;border-radius:14px}
-
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .printGrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
 .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:40px}
-
-input,select{
-  width:100%;
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:6px;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  margin-top:20px;
-  background:#000;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-}
-
+input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px}
+button{width:100%;padding:14px;margin-top:20px;background:#000;color:#fff;border:none}
 .section{margin-top:30px}
 .red{color:#cc0000;font-weight:bold}
 .green{color:#1b8f2a;font-weight:bold}
 .targetBox{background:#f7f7f7;padding:20px;border-radius:10px;border:1px solid #ddd}
 
-@media print{
- body{padding:10px;font-size:11px}
- button{display:none}
-}
+@media print{body{padding:10px;font-size:11px}button{display:none}}
 </style>
 </head>
 
@@ -67,162 +47,89 @@ button{
 <script>
 
 // populate dropdowns
-["front","back","left","right"].forEach(id=>{
- const s=document.getElementById(id);
- for(let i=0;i<=6;i++){
-   const opt=document.createElement("option");
+["front","back","left","right"].forEach(function(id){
+ var s=document.getElementById(id);
+ for(var i=0;i<=6;i++){
+   var opt=document.createElement("option");
    opt.value=i;
    opt.textContent=i+" colors";
    s.appendChild(opt);
  }
 });
 
-let storedJobCost=0;
-let storedQty=0;
-let storedPricePerShirt=0;
+var storedJobCost=0;
+var storedQty=0;
+var storedPricePerShirt=0;
 
 function generate(){
 
-const qty=parseFloat(document.getElementById("qty").value)||0;
-const markupPct=parseFloat(document.getElementById("markup").value)||0;
-const shirtCost=parseFloat(document.getElementById("shirtCost").value)||0;
-const shirtMarkup=parseFloat(document.getElementById("shirtMarkup").value)||0;
+var qty=parseFloat(document.getElementById("qty").value)||0;
+var markupPct=parseFloat(document.getElementById("markup").value)||0;
+var shirtCost=parseFloat(document.getElementById("shirtCost").value)||0;
+var shirtMarkup=parseFloat(document.getElementById("shirtMarkup").value)||0;
 
 if(qty<50){alert("Minimum order is 50");return;}
 
-const f=parseInt(document.getElementById("front").value);
-const b=parseInt(document.getElementById("back").value);
-const l=parseInt(document.getElementById("left").value);
-const r=parseInt(document.getElementById("right").value);
+var f=parseInt(document.getElementById("front").value);
+var b=parseInt(document.getElementById("back").value);
+var l=parseInt(document.getElementById("left").value);
+var r=parseInt(document.getElementById("right").value);
 
-const markup=markupPct/100;
-const pricePerPrint=2.6;
-const screenFee=22;
+var markup=markupPct/100;
+var pricePerPrint=2.6;
+var screenFee=22;
 
-// per location costs
-const frontCost=f*pricePerPrint*qty;
-const backCost=b*pricePerPrint*qty;
-const leftCost=l*pricePerPrint*qty;
-const rightCost=r*pricePerPrint*qty;
+// per location
+var frontCost=f*pricePerPrint*qty;
+var backCost=b*pricePerPrint*qty;
+var leftCost=l*pricePerPrint*qty;
+var rightCost=r*pricePerPrint*qty;
 
-const frontCustomer=frontCost*(1+markup);
-const backCustomer=backCost*(1+markup);
-const leftCustomer=leftCost*(1+markup);
-const rightCustomer=rightCost*(1+markup);
+var frontCustomer=frontCost*(1+markup);
+var backCustomer=backCost*(1+markup);
+var leftCustomer=leftCost*(1+markup);
+var rightCustomer=rightCost*(1+markup);
 
-const frontProfit=frontCustomer-frontCost;
-const backProfit=backCustomer-backCost;
-const leftProfit=leftCustomer-leftCost;
-const rightProfit=rightCustomer-rightCost;
+var frontProfit=frontCustomer-frontCost;
+var backProfit=backCustomer-backCost;
+var leftProfit=leftCustomer-leftCost;
+var rightProfit=rightCustomer-rightCost;
 
-const frontScreens=f*screenFee;
-const backScreens=b*screenFee;
-const leftScreens=l*screenFee;
-const rightScreens=r*screenFee;
+var frontScreens=f*screenFee;
+var backScreens=b*screenFee;
+var leftScreens=l*screenFee;
+var rightScreens=r*screenFee;
 
-const totalPrintCost=frontCost+backCost+leftCost+rightCost;
-const totalPrintCustomer=frontCustomer+backCustomer+leftCustomer+rightCustomer;
-const totalPrintProfit=frontProfit+backProfit+leftProfit+rightProfit;
-const totalScreenFees=frontScreens+backScreens+leftScreens+rightScreens;
+var totalPrintCost=frontCost+backCost+leftCost+rightCost;
+var totalPrintCustomer=frontCustomer+backCustomer+leftCustomer+rightCustomer;
+var totalPrintProfit=frontProfit+backProfit+leftProfit+rightProfit;
+var totalScreenFees=frontScreens+backScreens+leftScreens+rightScreens;
 
 // garments
-const garmentCost=shirtCost*qty;
-const garmentSell=(shirtCost+shirtMarkup)*qty;
-const garmentProfit=shirtMarkup*qty;
+var garmentCost=shirtCost*qty;
+var garmentSell=(shirtCost+shirtMarkup)*qty;
+var garmentProfit=shirtMarkup*qty;
 
 // totals
-const jobCost=garmentCost+totalPrintCost;
-const retail=jobCost*(1+markup);
-const pricePerShirt=retail/qty;
-const totalProfit=retail-jobCost;
+var jobCost=garmentCost+totalPrintCost;
+var retail=jobCost*(1+markup);
+var pricePerShirt=retail/qty;
+var totalProfit=retail-jobCost;
 
 storedJobCost=jobCost;
 storedQty=qty;
 storedPricePerShirt=pricePerShirt;
 
-document.getElementById("report").innerHTML=`
+var html="";
+html+="<div class='section'><h2>PRINT PRODUCTION</h2>";
+html+="Front ("+f+" colors) Cost: <span class='red'>$"+frontCost.toFixed(2)+"</span> | Customer: <b>$"+frontCustomer.toFixed(2)+"</b> | Profit: <span class='green'>$"+frontProfit.toFixed(2)+"</span> | Screens: <span class='red'>$"+frontScreens.toFixed(2)+"</span><br><br>";
+html+="Back ("+b+" colors) Cost: <span class='red'>$"+backCost.toFixed(2)+"</span> | Customer: <b>$"+backCustomer.toFixed(2)+"</b> | Profit: <span class='green'>$"+backProfit.toFixed(2)+"</span> | Screens: <span class='red'>$"+backScreens.toFixed(2)+"</span><br><br>";
+html+="Left Sleeve ("+l+" colors) Cost: <span class='red'>$"+leftCost.toFixed(2)+"</span> | Customer: <b>$"+leftCustomer.toFixed(2)+"</b> | Profit: <span class='green'>$"+leftProfit.toFixed(2)+"</span> | Screens: <span class='red'>$"+leftScreens.toFixed(2)+"</span><br><br>";
+html+="Right Sleeve ("+r+" colors) Cost: <span class='red'>$"+rightCost.toFixed(2)+"</span> | Customer: <b>$"+rightCustomer.toFixed(2)+"</b> | Profit: <span class='green'>$"+rightProfit.toFixed(2)+"</span> | Screens: <span class='red'>$"+rightScreens.toFixed(2)+"</span><br></div>";
 
-<div class="section">
-<h2>PRE-PRINTED GARMENTS</h2>
-Blank Shirt Cost: <span class="red">$${shirtCost.toFixed(2)}</span><br>
-Customer Shirt Price: <b>$${(shirtCost+shirtMarkup).toFixed(2)}</b><br>
-Total Garment Cost: <span class="red">$${garmentCost.toFixed(2)}</span><br>
-Garment Retail Total: <b>$${garmentSell.toFixed(2)}</b><br>
-Garment Profit: <span class="green">$${garmentProfit.toFixed(2)}</span>
-</div>
-
-<div class="section">
-<h2>PRINT PRODUCTION</h2>
-
-Front (${f} colors)<br>
-Cost: <span class="red">$${frontCost.toFixed(2)}</span> |
-Customer Price: <b>$${frontCustomer.toFixed(2)}</b> |
-Profit: <span class="green">$${frontProfit.toFixed(2)}</span> |
-Screen Fees: <span class="red">$${frontScreens.toFixed(2)}</span><br><br>
-
-Back (${b} colors)<br>
-Cost: <span class="red">$${backCost.toFixed(2)}</span> |
-Customer Price: <b>$${backCustomer.toFixed(2)}</b> |
-Profit: <span class="green">$${backProfit.toFixed(2)}</span> |
-Screen Fees: <span class="red">$${backScreens.toFixed(2)}</span><br><br>
-
-Left Sleeve (${l} colors)<br>
-Cost: <span class="red">$${leftCost.toFixed(2)}</span> |
-Customer Price: <b>$${leftCustomer.toFixed(2)}</b> |
-Profit: <span class="green">$${leftProfit.toFixed(2)}</span> |
-Screen Fees: <span class="red">$${leftScreens.toFixed(2)}</span><br><br>
-
-Right Sleeve (${r} colors)<br>
-Cost: <span class="red">$${rightCost.toFixed(2)}</span> |
-Customer Price: <b>$${rightCustomer.toFixed(2)}</b> |
-Profit: <span class="green">$${rightProfit.toFixed(2)}</span> |
-Screen Fees: <span class="red">$${rightScreens.toFixed(2)}</span><br><br>
-
-<hr>
-
-Total Screen Fees: <span class="red">$${totalScreenFees.toFixed(2)}</span><br>
-Total Print Cost: <span class="red">$${totalPrintCost.toFixed(2)}</span><br>
-Total Print Customer Price: <b>$${totalPrintCustomer.toFixed(2)}</b><br>
-Total Print Profit: <span class="green">$${totalPrintProfit.toFixed(2)}</span>
-</div>
-
-<div class="section twoCol">
-<div>
-<h2>CUSTOMER PRICING</h2>
-Customer Price Per Shirt: <b>$${pricePerShirt.toFixed(2)}</b><br>
-Customer Invoice Total: <b>$${retail.toFixed(2)}</b>
-</div>
-
-<div class="targetBox">
-<h2>Customer Target Scenario</h2>
-<input id="targetInput" type="number" placeholder="Target price per shirt" oninput="calcTarget()">
-<div id="targetResults"></div>
-</div>
-</div>
-
-<div class="section">
-<h2>JOB PROFIT</h2>
-Total Profit: <span class="green">$${totalProfit.toFixed(2)}</span>
-</div>
-
-<br><button onclick="window.print()">Print Quote</button>
-`;
+document.getElementById("report").innerHTML=html;
 }
 
-function calcTarget(){
-const target=parseFloat(document.getElementById("targetInput").value)||0;
-if(target===0) return;
-
-const targetTotal=target*storedQty;
-const targetProfit=targetTotal-storedJobCost;
-const savings=storedPricePerShirt-target;
-
-document.getElementById("targetResults").innerHTML=`
-Target Job Total: $${targetTotal.toFixed(2)}<br>
-Total Profit: <span class="${targetProfit>=0?'green':'red'}">$${targetProfit.toFixed(2)}</span><br>
-Savings Per Shirt: $${savings.toFixed(2)}
-`;
-}
 </script>
 </body>
 </html>
